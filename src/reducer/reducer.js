@@ -45,19 +45,29 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.TAKE_BACK: {
-            let {position, movesList, turn} = state
+            let {position, movesList, turn, castleDirection} = state
 
             if(position.length > 1) {
+                turn = (turn === 'w') ? 'b' : 'w'
+
+                //if move was castling, need to revert castling status
+                if(movesList[movesList.length - 1] === 'O-O' 
+                    || movesList[movesList.length - 1] === 'O-O-O') {
+                        if(turn === 'w')
+                            castleDirection[turn] = castleDirection['prev_w']
+                        else
+                            castleDirection[turn] = castleDirection['prev_b']
+                    }
+
                 position = position.slice(0, position.length - 1)
                 movesList = movesList.slice(0, movesList.length - 1)
-                turn = (turn === 'w') ? 'b' : 'w'
             }
-
             return {
                 ...state,
                 position,
                 movesList,
-                turn
+                turn,
+                castleDirection
             }
         }
 
@@ -79,6 +89,16 @@ export const reducer = (state, action) => {
 
         case actionTypes.CAN_CASTLE: {
             let {turn, castleDirection} = state
+            if(castleDirection[turn] === 'none')    {
+                return {
+                    ...state
+                }
+            }
+            //set previous castle direction to allow for reversal when undoing
+            if(turn === 'w')
+                castleDirection['prev_w'] = castleDirection[turn]
+            else
+                castleDirection['prev_b'] = castleDirection[turn]
             castleDirection[turn] = action.payload
             return {
                 ...state,

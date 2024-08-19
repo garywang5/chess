@@ -20,6 +20,8 @@ export const initGameState = {
     promotionSquare : null,
     castleDirection: {
         w: 'both',
-        b: 'both'
+        b: 'both',
+        prev_w: 'both',
+        prev_b: 'both'
     }
 }
