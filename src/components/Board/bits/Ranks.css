@@ -1,0 +1,8 @@
+/* display the ranks to the left of the board in a column */
+.ranks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: var(--light-tile);
+}

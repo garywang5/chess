@@ -1,0 +1,15 @@
+/* CSS custom properties */
+:root {
+    --tile-size : 75px;
+    --light-tile : #F0D8B7;
+    --dark-tile : #B48764;
+    --bg-color : #202020;
+    --highlight : rgba(0,0,0,.1);
+}
+
+/* make tile size 50px for smaller screen */
+@media all and (max-width : 450px) {
+    :root {
+        --tile-size : 50px;
+    }
+}
