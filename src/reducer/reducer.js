@@ -45,7 +45,7 @@ export const reducer = (state, action) => {
         }
 
         case actionTypes.TAKE_BACK: {
-            let {position, movesList, turn, castleDirection} = state
+            let {position, movesList, turn, castleDirection, status} = state
 
             if(position.length > 1) {
                 turn = (turn === 'w') ? 'b' : 'w'
@@ -61,13 +61,17 @@ export const reducer = (state, action) => {
 
                 position = position.slice(0, position.length - 1)
                 movesList = movesList.slice(0, movesList.length - 1)
+                //undoing removes the end of game popup box
+                if(status !== Status.ongoing)
+                    status = Status.ongoing
             }
             return {
                 ...state,
                 position,
                 movesList,
                 turn,
-                castleDirection
+                castleDirection,
+                status
             }
         }
 
