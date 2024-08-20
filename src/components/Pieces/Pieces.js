@@ -64,19 +64,29 @@ const Pieces = () => {
                 updateCastlingState({p,file,rank})
             }
 
+            const opponent = p.startsWith('w') ? 'b' : 'w'
+            const castleDirection = appState.castleDirection[`${p.startsWith('b') ? 'white' : 'black'}`]
+
             const newPosition = performMove({
                 position: currentPosition,
                 piece: p,
                 rank, file, x, y
             })
+            
+            let status = 'none'
+            if(arbiter.isCheckMate(newPosition, opponent, castleDirection))
+                status = 'checkmate'
+            else if(arbiter.isPlayerInCheck({
+                positionAfterMove: newPosition,
+                position: null,
+                player: opponent
+            }))
+                status = 'check'
             const newMove = getNewMoveNotation({
-                piece: p, rank, file, x, y, position: currentPosition
+                piece: p, rank, file, x, y, position: currentPosition, status
             })
             
             dispatch(makeNewMove({newPosition, newMove}))
-
-            const opponent = p.startsWith('w') ? 'b' : 'w'
-            const castleDirection = appState.castleDirection[`${p.startsWith('b') ? 'white' : 'black'}`]
             
             //check for insufficient material
             if(arbiter.insufficientMaterial(newPosition))

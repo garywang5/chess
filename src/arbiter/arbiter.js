@@ -156,7 +156,7 @@ const arbiter = {
 
         //in check and no moves possible to get out of check
         return (isInCheck && moves.length === 0)
-    },
+    }
 }
 
 export default arbiter
